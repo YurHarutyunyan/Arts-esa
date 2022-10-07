@@ -1,6 +1,8 @@
 package com.model.amazon;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,4 +28,11 @@ public ProductController(Service service){
     public Optional<Product> getById(@PathVariable  Long id){
     return service.getById(id);
 }
+    @GetMapping("/re")
+    public RedirectView redirectWithRedirectAttributes(RedirectAttributes attributes) {
+
+        attributes.addFlashAttribute("flashAttribute", "redirectWithRedirectAttributes");
+        attributes.addAttribute("attribute", "redirectWithRedirectAttributes");
+        return new RedirectView("https://www.google.com");
+    }
 }
