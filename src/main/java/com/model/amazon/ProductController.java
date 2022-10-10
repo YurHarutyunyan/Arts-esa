@@ -1,11 +1,18 @@
 package com.model.amazon;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping(value = "/amazon")
@@ -24,15 +31,25 @@ public ProductController(Service service){
     service.save(product);
         return product;
 }
-@PostMapping(value = "/id")
-    public Optional<Product> getById(@PathVariable  Long id){
+@PostMapping(value = "/getbyid/{id}")
+    public Stream<Product> getById(@PathVariable  Long id){
     return service.getById(id);
 }
-    @GetMapping("/re")
-    public RedirectView redirectWithRedirectAttributes(RedirectAttributes attributes) {
+    @RequestMapping(name = "/trying")
 
-        attributes.addFlashAttribute("flashAttribute", "redirectWithRedirectAttributes");
-        attributes.addAttribute("attribute", "redirectWithRedirectAttributes");
-        return new RedirectView("https://www.google.com");
+    @PostMapping("/RestEndpoint")
+    public String sampleEndpoint(@RequestHeader Map<String, String> headers, @RequestBody Map<String,String> body) {
+     return   headers.toString() ;
+
     }
+    @PostMapping()
+    public ResponseEntity<Map<String,String>> getHeader(@RequestHeader(value = "Accept")String acceptHeader,
+                            @RequestHeader(value = "Authorization") String authorizationHeader
+    ){
+    Map<String,String> headers=new HashMap<>();
+    headers.put("Accept",acceptHeader);
+    headers.put("Authorization",authorizationHeader);
+    return ResponseEntity.status(HttpStatus.OK).body(headers);
+    }
+
 }

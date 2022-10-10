@@ -5,4 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 @EntityScan("com.model.amazon")
 
 public interface ProductRepository extends CrudRepository<Product,Long> {
+
 }

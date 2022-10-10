@@ -3,11 +3,13 @@ package com.model.amazon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 @org.springframework.stereotype.Service
 public class Service {
 
-   private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
+
     public Service(ProductRepository productRepository) {
         this.productRepository = productRepository;
     }
@@ -22,8 +24,12 @@ public class Service {
         productRepository.save(product);
         return product;
     }
-    public Optional<Product> getById(Long id){
-        return  productRepository.findById(id);
+
+    public Stream<Product> getById(Long id) {
+        List<Product> products = get();
+       return  products.stream().filter(t->(t.getId().equals(id)));
 
     }
+
 }
+
